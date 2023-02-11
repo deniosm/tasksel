@@ -1,0 +1,530 @@
+Source: tasksel
+Section: tasks
+Priority: optional
+Maintainer: Debian Install System Team <debian-boot@lists.debian.org>
+Uploaders: Denis Maslo <denios-linux@proton.me>,
+           nicoo <nicoo@debian.org>
+Standards-Version: 4.6.1
+Build-Depends:
+	debhelper-compat (= 13),
+	gettext,
+	po-debconf
+Rules-Requires-Root: no
+
+Package: tasksel
+Section: admin
+Architecture: all
+Pre-Depends: debconf | cdebconf
+Depends: ${misc:Depends}, liblocale-gettext-perl, apt, tasksel-data
+Conflicts: base-config (<< 2.32)
+Description: tool for selecting tasks for installation on Debian systems
+ This package provides 'tasksel', a simple interface for users who
+ want to configure their system to perform a specific task.
+
+Package: tasksel-data
+Section: admin
+Architecture: all
+Depends: ${misc:Depends}
+Recommends: laptop-detect, tasksel
+Description: official tasks used for installation of Debian systems
+ This package contains data about the standard tasks available on a Debian
+ system.
+
+Package: task-desktop
+Architecture: all
+Description: Debian desktop environment
+ This task package is used to install the Debian desktop.
+Depends: ${misc:Depends},
+	xorg,
+	xserver-xorg-video-all,
+	xserver-xorg-input-all,
+	desktop-base,
+	task-bosnian-desktop
+Recommends:
+	task-gnome-desktop | task-xfce-desktop | task-kde-desktop | task-lxde-desktop | task-gnome-flashback-desktop | task-cinnamon-desktop | task-mate-desktop | task-lxqt-desktop,
+# For use by third-party apps.
+	xdg-utils,
+# Font with wide unicode coverage, prevents “Unicode tofu”
+	fonts-symbola,
+# mdns/zeroconf stuff
+	avahi-daemon,
+	libnss-mdns,
+# desktop machines might not be up 24/7
+	anacron,
+# Make sure that CDs etc can be ejected. May not be installed by d-i.
+	eject,
+# wireless networking tools (they're more and more used on desktops too)
+	iw,
+# sound
+	alsa-utils,
+# For use by users, to elevate privileges
+	sudo,
+# firefox is the most popular web browser at the moment,
+# although both gnome and kde offer their own too
+	firefox | firefox-esr,
+# print system
+	cups,
+
+Package: task-gnome-desktop
+Architecture: all
+Description: GNOME
+ This task package is used to install the Debian desktop, featuring
+ the GNOME desktop environment, and with other packages that Debian users
+ expect to have available on the desktop.
+Depends: ${misc:Depends},
+	task-desktop,
+	task-bosnian-desktop,
+# only depend on a very minimal gnome desktop, to ensure it fits on CD1
+	gnome-core,
+Recommends:
+# The full gnome desktop environment should be included if possible
+# even if the larger gnome metapackage doesn't fit.
+	gnome,
+# Package management
+	synaptic,
+# GNOME support in LibreOffice
+	libreoffice-gnome,
+# libreoffice is the best word processor / office suite at the moment
+	libreoffice-writer,
+	libreoffice-calc,
+	libreoffice-impress,
+# make help menu work
+	libreoffice-help-en-us,
+# make thesaurus work
+	mythes-en-us,
+# make spellchecker work
+	hunspell-en-us,
+# make hyphenation work
+	hyphen-en-us,
+# we need a working network setup at least
+	network-manager-gnome,
+
+Package: task-gnome-flashback-desktop
+Architecture: all
+Description: GNOME Flashback
+ This task package is used to install the Debian desktop, featuring
+ the GNOME Flashback desktop environment, and with other packages that
+ Debian users expect to have available on the desktop.
+Depends: ${misc:Depends},
+    task-bosnian-desktop,
+	task-desktop,
+# the basic components required for the session
+	gnome-session-flashback,
+# the display manager
+	lightdm,
+# the control center
+	gnome-control-center,
+# some core GNOME applications
+	eog,
+	evince,
+	file-roller,
+	gedit,
+	gnome-calculator,
+	gnome-screenshot,
+	gnome-terminal,
+	totem,
+# network manager applet
+	network-manager-gnome,
+Recommends:
+# GNOME support in LibreOffice
+	libreoffice-gnome,
+# libreoffice is the best word processor / office suite at the moment
+	libreoffice-writer,
+	libreoffice-calc,
+	libreoffice-impress,
+# make help menu work
+	libreoffice-help-en-us,
+# make thesaurus work
+	mythes-en-us,
+# make spellchecker work
+	hunspell-en-us,
+# make hyphenation work
+	hyphen-en-us,
+# accessibility support
+	orca,
+# web browser
+	firefox | firefox-esr,
+# mail client
+	evolution,
+# package management
+	gnome-software,
+	synaptic,
+# some non-core GNOME applications
+	alacarte,
+	gnome-disk-utility,
+	gnome-tweaks,
+	yelp,
+
+Package: task-kde-desktop
+Architecture: all
+Description: KDE Plasma
+ This task package is used to install the Debian desktop, featuring
+ the KDE Plasma desktop environment, and with other packages that Debian users
+ expect to have available on the desktop.
+Depends: ${misc:Depends},
+	task-desktop,
+	kde-standard,
+	task-bosnian-desktop,
+	sddm,
+Recommends:
+# accessibility support
+	kdeaccessibility,
+# orca works with kde, adding accessibility
+	orca,
+# desktop network setup
+	plasma-nm,
+# Package management.
+	apper,
+# temporarily moved from task-desktop due to #525077
+	gimp,
+# libreoffice is the best word processor / office suite at the moment
+	libreoffice-writer,
+	libreoffice-calc,
+	libreoffice-impress,
+# KDE support in LibreOffice
+	libreoffice-plasma,
+	libreoffice-kf5,
+# make help menu work
+	libreoffice-help-en-us,
+# make thesaurus work
+	mythes-en-us,
+# make spellchecker work
+	hunspell-en-us,
+# make hyphenation work
+	hyphen-en-us,
+# gui for configuration of the print service
+	print-manager,
+# media player
+	dragonplayer,
+
+Package: task-lxde-desktop
+Architecture: all
+Description: LXDE
+ This task package is used to install the Debian desktop, featuring
+ the LXDE desktop environment, and with other packages that Debian users
+ expect to have available on the desktop.
+Depends: ${misc:Depends},
+	task-desktop,
+	task-bosnian-desktop,
+	lightdm,
+	lxde,
+Recommends:
+	lxtask,
+	lxlauncher,
+	xsane,
+# libreoffice widgets using just gtk, and also accessibility needs the GTK frontend
+	libreoffice-gtk3,
+# Package management.
+	synaptic,
+# libreoffice is the best word processor / office suite at the moment
+	libreoffice-writer,
+	libreoffice-calc,
+	libreoffice-impress,
+# make help menu work
+	libreoffice-help-en-us,
+# make thesaurus work
+	mythes-en-us,
+# make spellchecker work
+	hunspell-en-us,
+# make hyphenation work
+	hyphen-en-us,
+# gui for configuration of the print service
+	system-config-printer,
+# orca works with lxde, adding accessibility
+	orca,
+
+Package: task-lxqt-desktop
+Architecture: all
+Description: LXQt
+ This task package is used to install the Debian desktop, featuring
+ the LXQt desktop environment, and with other packages that Debian users
+ expect to have available on the desktop.
+Depends: ${misc:Depends},
+         task-bosnian-desktop,
+         task-desktop,
+         sddm,
+         sddm-theme-debian-elarun | sddm-theme-debian-elarun,
+         lxqt,
+Recommends: xsane,
+# orca works with qt, adding accessibility
+	orca,
+# libreoffice widgets using just gtk and qt
+	libreoffice-gtk3,
+	libreoffice-qt5,
+# Package management.
+	synaptic,
+# libreoffice is the best word processor / office suite at the moment
+	libreoffice-writer,
+	libreoffice-calc,
+	libreoffice-impress,
+# make help menu work
+	libreoffice-help-en-us,
+# make thesaurus work
+	mythes-en-us,
+# make spellchecker work
+	hunspell-en-us,
+# make hyphenation work
+	hyphen-en-us,
+# gui for configuration of the print service
+	system-config-printer,
+
+Package: task-xfce-desktop
+Architecture: all
+Description: Xfce
+ This task package is used to install the Debian desktop, featuring
+ the Xfce desktop environment, and with other packages that Debian users
+ expect to have available on the desktop.
+Depends: ${misc:Depends},
+    task-bosnian-desktop,
+	task-desktop,
+# The basics of xfce, not the whole thing.
+	xfce4,
+	lightdm
+Recommends:
+# a screen saver/locker
+	light-locker,
+# well known xfce4 enhancements
+	xfce4-goodies,
+	xfce4-power-manager,
+	xfce4-terminal,
+# xfce text editor
+	mousepad,
+# xfce is really improved by using dbus
+	default-dbus-session-bus | dbus-session-bus,
+# support for scanners
+	xsane,
+# media players
+	parole,
+	quodlibet,
+# pdf viewer
+	atril,
+# icon theme
+	tango-icon-theme,
+# network management
+	network-manager-gnome,
+# package management
+	synaptic,
+# libreoffice is the best word processor / office suite at the moment
+	libreoffice-writer,
+	libreoffice-calc,
+	libreoffice-impress,
+# make help menu work
+	libreoffice-help-en-us,
+# make thesaurus work
+	mythes-en-us,
+# make spellchecker work
+	hunspell-en-us,
+# make hyphenation work
+	hyphen-en-us,
+# gui for configuration of the print service
+	system-config-printer,
+# orca works with xfce, adding accessibility
+	orca,
+# libreoffice accessibility needs the GTK frontend
+	libreoffice-gtk3,
+
+Package: task-cinnamon-desktop
+Architecture: all
+Description: Cinnamon
+ This task package is used to install the Debian desktop, featuring
+ the Cinnamon desktop environment, and with other packages that Debian users
+ expect to have available on the desktop.
+Depends: ${misc:Depends},
+	task-desktop,
+	task-bosnian-desktop,
+	cinnamon-desktop-environment
+
+Package: task-mate-desktop
+Architecture: all
+Description: MATE
+ This task package is used to install the Debian desktop, featuring
+ the MATE desktop environment, and with other packages that Debian users
+ expect to have available on the desktop.
+Depends: ${misc:Depends},
+	task-desktop,
+	mate-desktop-environment,
+	task-bosnian-desktop,
+	lightdm,
+Recommends:
+# Package management.
+	synaptic,
+# libreoffice is the best word processor / office suite at the moment
+	libreoffice-writer,
+	libreoffice-calc,
+	libreoffice-impress,
+# we need a working network setup at least
+	network-manager-gnome,
+# libreoffice accessibility needs the GTK frontend
+	libreoffice-gtk3,
+
+Package: task-laptop
+Architecture: all
+Description: laptop
+ This task package installs software useful for a laptop.
+Depends: ${misc:Depends},
+    task-bosnian-desktop,
+	anacron,
+Recommends:
+	avahi-autoipd,
+	bluetooth,
+	powertop,
+# wireless networking tools
+	iw,
+	wireless-tools,
+	wpasupplicant,
+
+Package: task-web-server
+Architecture: all
+Description: web server
+ This task selects packages useful for a general purpose web server
+ system.
+Depends: ${misc:Depends},
+	apache2,
+Recommends:
+	apache2-doc,
+	analog,
+
+Package: task-ssh-server
+Architecture: all
+Description: SSH server
+ This task sets up your system to be remotely accessed through SSH
+ connections.
+Depends: ${misc:Depends},
+	openssh-server,
+Recommends:
+	openssh-client,
+
+Package: task-bosnian
+Architecture: all
+XBC-Maintainer: Safir Secerovic <sapphire@linux.org.ba>
+Description: Bosnian environment
+ This task installs packages and documentation in Bosnian
+ to help Bosnian speaking people use Debian.
+Depends: ${misc:Depends},task-bosnian-desktop,
+	locales
+Recommends:
+	aspell-hr,
+	itools
+
+Package: task-bosnian-desktop
+Architecture: all
+XBC-Maintainer: Safir Secerovic <sapphire@linux.org.ba>
+Description: Bosnian desktop
+ This task localises the desktop in Bosnian.
+Depends: ${misc:Depends},
+    desktop-base
+Recommends:
+	libreoffice-l10n-bs,
+	firefox-esr-l10n-bs | firefox-l10n-bs,
+	hunspell-hr
+
+Package: task-bosnian-kde-desktop
+Architecture: all
+Description: Bosnian KDE Plasma desktop
+ This task localises the KDE Plasma desktop in Bosnian.
+Depends: ${misc:Depends},desktop-base
+
+Package: task-croatian
+Architecture: all
+XBC-Maintainer: Safir Secerovic <sapphire@linux.org.ba>
+Description: Croatian environment
+ This task installs packages and documentation in Croatian
+ to help Croatian speaking people use Debian.
+Depends: ${misc:Depends},
+	locales
+Recommends:
+	aspell-hr,
+
+Package: task-croatian-desktop
+Architecture: all
+XBC-Maintainer: Safir Secerovic <sapphire@linux.org.ba>
+Description: Croatian desktop
+ This task localises the desktop in Croatian.
+Depends: ${misc:Depends},
+Recommends:
+	hyphen-hr,
+	libreoffice-l10n-hr,
+	hunspell-hr,
+	firefox-esr-l10n-hr | firefox-l10n-hr,
+
+Package: task-croatian-kde-desktop
+Architecture: all
+Description: Croatian KDE Plasma desktop
+ This task localises the KDE Plasma desktop in Croatian.
+Depends: ${misc:Depends},
+
+Package: task-macedonian
+Architecture: all
+Description: Macedonian environment
+ This task installs packages and documentation in Macedonian
+ to help Macedonian speaking people use Debian.
+Depends: ${misc:Depends},
+	manpages-mk,
+
+Package: task-macedonian-desktop
+Architecture: all
+Description: Macedonian desktop
+ This task localises the desktop in Macedonian.
+Depends: ${misc:Depends},
+Recommends:
+	firefox-esr-l10n-mk | firefox-l10n-mk,
+	libreoffice-l10n-mk,
+	fonts-dejavu
+
+Package: task-macedonian-kde-desktop
+Architecture: all
+Description: Macedonian KDE Plasma desktop
+ This task localises the KDE Plasma desktop in Macedonian.
+Depends: ${misc:Depends}
+
+Package: task-serbian
+Architecture: all
+XBC-Maintainer: Safir Secerovic <sapphire@linux.org.ba>
+Description: Serbian environment
+ This task installs packages and documentation in Serbian
+ to help Serbian speaking people use Debian.
+Depends: ${misc:Depends},
+
+Package: task-serbian-desktop
+Architecture: all
+XBC-Maintainer: Safir Secerovic <sapphire@linux.org.ba>
+Description: Serbian desktop
+ This task localises the desktop in Serbian.
+Depends: ${misc:Depends},
+Recommends:
+	libreoffice-l10n-sr,
+	firefox-esr-l10n-sr | firefox-l10n-sr,
+	hunspell-sr
+
+Package: task-serbian-kde-desktop
+Architecture: all
+Description: Serbian KDE Plasma desktop
+ This task localises the KDE Plasma desktop in Serbian.
+Depends: ${misc:Depends},
+
+Package: task-slovenian
+Architecture: all
+Description: Slovenian environment
+ This task installs packages and documentation in Slovenian
+ to help Slovenian speaking people use Debian.
+Depends: ${misc:Depends},
+Recommends:
+	aspell-sl
+
+Package: task-slovenian-desktop
+Architecture: all
+Description: Slovenian desktop
+ This task localises the desktop in Slovenian.
+Depends: ${misc:Depends},
+Recommends:
+	firefox-esr-l10n-sl | firefox-l10n-sl,
+	libreoffice-l10n-sl,
+	libreoffice-help-sl,
+	hunspell-sl
+
+Package: task-slovenian-kde-desktop
+Architecture: all
+Description: Slovenian KDE Plasma desktop
+ This task localises the KDE Plasma desktop in Slovenian.
+Depends: ${misc:Depends},
+
